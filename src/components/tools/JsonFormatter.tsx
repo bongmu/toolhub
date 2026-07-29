@@ -148,7 +148,23 @@ export default function JsonFormatter() {
             spellCheck={false}
             className={`${expanded ? 'flex-1' : 'h-[32rem]'} w-full resize-y rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-950 p-3 font-mono text-sm leading-relaxed outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100`}
           />
-    
+          {/* 悬浮在输入框右上角的放大/缩小图标按钮 */}
+          <button
+            onClick={toggle}
+            aria-label={expanded ? '还原' : '放大'}
+            title={expanded ? '还原（Esc）' : '放大输入区（Esc 还原）'}
+            className="absolute right-3 top-11 rounded-md bg-white/80 p-1 text-gray-400 backdrop-blur-sm transition hover:bg-white hover:text-indigo-600 dark:bg-gray-800/80 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-indigo-400"
+          >
+            {expanded ? (
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25" />
+              </svg>
+            ) : (
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+              </svg>
+            )}
+          </button>
         </div>
 
         <div className="flex flex-col">
