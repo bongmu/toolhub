@@ -1,10 +1,11 @@
 ---
 import { CATEGORIES, SITE } from '../data/tools';
+import ThemeToggle from './ThemeToggle';
 ---
 
-<header class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur">
+<header class="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
   <div class="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-    <a href="/" class="flex items-center gap-2 text-lg font-bold text-gray-900">
+    <a href="/" class="flex items-center gap-2 text-lg font-bold text-gray-900 dark:text-gray-100">
       <span class="text-2xl">🧰</span>
       <span>{SITE.name}</span>
     </a>
@@ -13,18 +14,21 @@ import { CATEGORIES, SITE } from '../data/tools';
         CATEGORIES.map((c) => (
           <a
             href={`/#cat-${c.id}`}
-            class="rounded-lg px-3 py-1.5 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900"
+            class="rounded-lg px-3 py-1.5 text-sm text-gray-600 transition hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100"
           >
             {c.icon} {c.name}
           </a>
         ))
       }
     </nav>
-    <a
-      href="/"
-      class="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-indigo-700 sm:hidden"
-    >
-      全部工具
-    </a>
+    <div class="flex items-center gap-1">
+      <a
+        href="/"
+        class="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-indigo-700 sm:hidden"
+      >
+        全部工具
+      </a>
+      <ThemeToggle client:load />
+    </div>
   </div>
 </header>

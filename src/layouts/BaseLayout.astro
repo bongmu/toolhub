@@ -30,6 +30,17 @@ const adsenseId = import.meta.env.PUBLIC_ADSENSE_ID;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
 
+    <!-- 深色模式：首屏渲染前应用，避免闪烁 -->
+    <script is:inline>
+      (() => {
+        const saved = localStorage.getItem('theme');
+        const dark = saved
+          ? saved === 'dark'
+          : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
+
     <!-- Open Graph（微信/微博等分享时的卡片信息） -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />

@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 const btn =
   'rounded-lg px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40';
 const btnPrimary = `${btn} bg-indigo-600 text-white hover:bg-indigo-700`;
-const btnGhost = `${btn} border border-gray-300 bg-white text-gray-700 hover:bg-gray-50`;
+const btnGhost = `${btn} border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950`;
 
 function genOne(): string {
   // 浏览器内置的密码学安全 UUID v4
@@ -34,7 +34,7 @@ export default function UuidGenerator() {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center gap-3">
-        <label className="flex items-center gap-2 text-sm text-gray-600">
+        <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
           数量
           <input
             type="number"
@@ -42,10 +42,10 @@ export default function UuidGenerator() {
             max={100}
             value={count}
             onChange={(e) => setCount(Number(e.target.value))}
-            className="w-20 rounded-lg border border-gray-300 px-2 py-1.5 text-sm outline-none focus:border-indigo-400"
+            className="w-20 rounded-lg border border-gray-300 dark:border-gray-600 px-2 py-1.5 text-sm outline-none focus:border-indigo-400"
           />
         </label>
-        <label className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-600">
+        <label className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400">
           <input
             type="checkbox"
             checked={uppercase}
@@ -54,7 +54,7 @@ export default function UuidGenerator() {
           />
           大写
         </label>
-        <label className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-600">
+        <label className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400">
           <input
             type="checkbox"
             checked={noDash}
@@ -71,16 +71,16 @@ export default function UuidGenerator() {
         </button>
       </div>
 
-      <ul className="divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200">
+      <ul className="divide-y divide-gray-100 dark:divide-gray-800 overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700">
         {uuids.map((u, i) => (
           <li
             key={i}
-            className="flex items-center justify-between gap-3 bg-white px-4 py-2.5 transition hover:bg-gray-50"
+            className="flex items-center justify-between gap-3 bg-white dark:bg-gray-900 px-4 py-2.5 transition hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950"
           >
-            <code className="min-w-0 truncate font-mono text-sm text-gray-800">{u}</code>
+            <code className="min-w-0 truncate font-mono text-sm text-gray-800 dark:text-gray-200">{u}</code>
             <button
               onClick={() => copy(u, String(i))}
-              className="shrink-0 rounded-lg px-2.5 py-1 text-xs text-gray-500 transition hover:bg-indigo-50 hover:text-indigo-600"
+              className="shrink-0 rounded-lg px-2.5 py-1 text-xs text-gray-500 dark:text-gray-400 transition hover:bg-indigo-50 dark:hover:bg-indigo-950/50 dark:bg-indigo-950/50 hover:text-indigo-600 dark:hover:text-indigo-400"
             >
               {copiedKey === String(i) ? '✓ 已复制' : '复制'}
             </button>

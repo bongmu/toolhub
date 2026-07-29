@@ -59,9 +59,9 @@ export default function WordCounter() {
     <div>
       <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
         {items.map(([label, value]) => (
-          <div key={label} className="rounded-xl bg-indigo-50 px-4 py-3 text-center">
+          <div key={label} className="rounded-xl bg-indigo-50 dark:bg-indigo-950/50 px-4 py-3 text-center">
             <div className="text-lg font-bold text-indigo-700">{value}</div>
-            <div className="mt-0.5 text-xs text-gray-500">{label}</div>
+            <div className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{label}</div>
           </div>
         ))}
       </div>
@@ -69,12 +69,12 @@ export default function WordCounter() {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="在此输入或粘贴文本，统计结果实时更新…"
-        className="h-72 w-full resize-y rounded-xl border border-gray-300 bg-gray-50 p-3 leading-relaxed outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+        className="h-[26rem] w-full resize-y rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-950 p-3 leading-relaxed outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 dark:text-gray-100"
       />
       <div className="mt-2 flex justify-end">
         <button
           onClick={() => setText('')}
-          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 transition hover:bg-gray-50"
+          className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 transition hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950"
         >
           清空
         </button>

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 const btn =
   'rounded-lg px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40';
 const btnPrimary = `${btn} bg-indigo-600 text-white hover:bg-indigo-700`;
-const btnGhost = `${btn} border border-gray-300 bg-white text-gray-700 hover:bg-gray-50`;
+const btnGhost = `${btn} border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950`;
 
 function pad(n: number) {
   return String(n).padStart(2, '0');
@@ -69,12 +69,12 @@ export default function TimestampConverter() {
   return (
     <div className="space-y-8">
       {/* 当前时间戳 */}
-      <div className="rounded-xl bg-indigo-50 p-4">
+      <div className="rounded-xl bg-indigo-50 dark:bg-indigo-950/50 p-4">
         <div className="mb-2 text-sm font-medium text-indigo-700">当前时间戳（每秒自动刷新）</div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500">秒级</span>
-            <code className="rounded bg-white px-2 py-1 font-mono text-lg font-semibold text-gray-900">
+            <span className="text-sm text-gray-500 dark:text-gray-400">秒级</span>
+            <code className="rounded bg-white dark:bg-gray-900 px-2 py-1 font-mono text-lg font-semibold text-gray-900 dark:text-gray-100">
               {nowSec}
             </code>
             <button onClick={() => copy(String(nowSec), 'sec')} className={btnGhost + ' !px-2.5 !py-1 !text-xs'}>
@@ -82,36 +82,36 @@ export default function TimestampConverter() {
             </button>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500">毫秒级</span>
-            <code className="rounded bg-white px-2 py-1 font-mono text-lg font-semibold text-gray-900">
+            <span className="text-sm text-gray-500 dark:text-gray-400">毫秒级</span>
+            <code className="rounded bg-white dark:bg-gray-900 px-2 py-1 font-mono text-lg font-semibold text-gray-900 dark:text-gray-100">
               {now}
             </code>
             <button onClick={() => copy(String(now), 'ms')} className={btnGhost + ' !px-2.5 !py-1 !text-xs'}>
               {copiedKey === 'ms' ? '✓' : '复制'}
             </button>
           </div>
-          <div className="text-sm text-gray-500">本地时间：{formatDate(new Date(now))}</div>
+          <div className="text-sm text-gray-500 dark:text-gray-400">本地时间：{formatDate(new Date(now))}</div>
         </div>
       </div>
 
       {/* 时间戳 → 日期 */}
       <div>
-        <h2 className="mb-2 font-semibold text-gray-900">时间戳 → 日期时间</h2>
+        <h2 className="mb-2 font-semibold text-gray-900 dark:text-gray-100">时间戳 → 日期时间</h2>
         <div className="flex flex-wrap gap-2">
           <input
             value={tsInput}
             onChange={(e) => setTsInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && convertTs()}
             placeholder="输入秒级或毫秒级时间戳，自动识别"
-            className="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 font-mono text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className="min-w-0 flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 font-mono text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
           />
           <button onClick={convertTs} disabled={!tsInput.trim()} className={btnPrimary}>
             转换
           </button>
         </div>
-        {tsError && <p className="mt-2 text-sm text-red-500">❌ {tsError}</p>}
+        {tsError && <p className="mt-2 text-sm text-red-500 dark:text-red-400">❌ {tsError}</p>}
         {tsResult && (
-          <p className="mt-2 font-mono text-sm text-gray-800">
+          <p className="mt-2 font-mono text-sm text-gray-800 dark:text-gray-200">
             结果：<span className="font-semibold text-indigo-700">{tsResult}</span>
             <button onClick={() => copy(tsResult, 'ts')} className={btnGhost + ' ml-2 !px-2.5 !py-1 !text-xs'}>
               {copiedKey === 'ts' ? '✓' : '复制'}
@@ -122,21 +122,21 @@ export default function TimestampConverter() {
 
       {/* 日期 → 时间戳 */}
       <div>
-        <h2 className="mb-2 font-semibold text-gray-900">日期时间 → 时间戳</h2>
+        <h2 className="mb-2 font-semibold text-gray-900 dark:text-gray-100">日期时间 → 时间戳</h2>
         <div className="flex flex-wrap gap-2">
           <input
             value={dateInput}
             onChange={(e) => setDateInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && convertDate()}
             placeholder="如 2026-07-29 12:00:00（可省略时间）"
-            className="min-w-0 flex-1 rounded-lg border border-gray-300 px-3 py-2 font-mono text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className="min-w-0 flex-1 rounded-lg border border-gray-300 dark:border-gray-600 px-3 py-2 font-mono text-sm outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
           />
           <button onClick={convertDate} disabled={!dateInput.trim()} className={btnPrimary}>
             转换
           </button>
         </div>
         {dateResult && (
-          <pre className="mt-2 whitespace-pre-wrap font-mono text-sm text-gray-800">{dateResult}</pre>
+          <pre className="mt-2 whitespace-pre-wrap font-mono text-sm text-gray-800 dark:text-gray-200">{dateResult}</pre>
         )}
       </div>
     </div>

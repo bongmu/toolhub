@@ -64,17 +64,17 @@ export default function MarkdownEditor() {
         </button>
         <button
           onClick={() => copy(text, 'md')}
-          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+          className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 transition hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950"
         >
           {copiedKey === 'md' ? '✓ 已复制' : '复制 Markdown'}
         </button>
         <button
           onClick={() => setText('')}
-          className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+          className="rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 transition hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950"
         >
           清空
         </button>
-        <span className="ml-auto self-center text-xs text-gray-400">草稿自动保存在本地</span>
+        <span className="ml-auto self-center text-xs text-gray-400 dark:text-gray-500">草稿自动保存在本地</span>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -83,10 +83,10 @@ export default function MarkdownEditor() {
           onChange={(e) => setText(e.target.value)}
           placeholder="在此输入 Markdown…"
           spellCheck={false}
-          className="h-[28rem] w-full resize-y rounded-xl border border-gray-300 bg-gray-50 p-3 font-mono text-sm leading-relaxed outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+          className="h-[36rem] w-full resize-y rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-950 p-3 font-mono text-sm leading-relaxed outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
         />
         <article
-          className="md-preview h-[28rem] overflow-auto rounded-xl border border-gray-300 bg-white p-4"
+          className="md-preview h-[36rem] overflow-auto rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 p-4"
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>
@@ -112,6 +112,16 @@ export default function MarkdownEditor() {
         .md-preview hr { margin: 1.2em 0; border: none; border-top: 1px solid #e5e7eb; }
         .md-preview img { max-width: 100%; border-radius: 8px; }
         .md-preview del { color: #9ca3af; }
+        :global(.dark) .md-preview { color: #d1d5db; }
+        :global(.dark) .md-preview h1, :global(.dark) .md-preview h2, :global(.dark) .md-preview h3,
+        :global(.dark) .md-preview h4, :global(.dark) .md-preview h5, :global(.dark) .md-preview h6 { color: #f3f4f6; }
+        :global(.dark) .md-preview blockquote { border-left-color: #4338ca; background: #1e1b4b; color: #9ca3af; }
+        :global(.dark) .md-preview code { background: #1e293b; color: #f472b6; }
+        :global(.dark) .md-preview pre { background: #020617; }
+        :global(.dark) .md-preview a { color: #818cf8; }
+        :global(.dark) .md-preview th, :global(.dark) .md-preview td { border-color: #374151; }
+        :global(.dark) .md-preview th { background: #111827; }
+        :global(.dark) .md-preview hr { border-top-color: #374151; }
       `}</style>
     </div>
   );

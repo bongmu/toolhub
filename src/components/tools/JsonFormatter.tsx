@@ -1,15 +1,17 @@
 import { useState } from 'react';
+import useExpand from '../../lib/useExpand';
 
 const btn =
   'rounded-lg px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40';
 const btnPrimary = `${btn} bg-indigo-600 text-white hover:bg-indigo-700`;
-const btnGhost = `${btn} border border-gray-300 bg-white text-gray-700 hover:bg-gray-50`;
+const btnGhost = `${btn} border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950`;
 
 export default function JsonFormatter() {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
+  const { expanded, toggle } = useExpand();
 
   const format = () => {
     try {
@@ -56,6 +58,44 @@ export default function JsonFormatter() {
     setError('');
   };
 
+  const pasteFromClipboard = async () => {
+    try {
+      setInput(await navigator.clipboard.readText());
+      setError('');
+    } catch {
+      setError('读取剪贴板失败，请检查浏览器权限或直接 Ctrl+V 粘贴');
+    }
+  };
+
+  const download = () => {
+    if (!output) return;
+    const blob = new Blob([output], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'formatted.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+
+  const onDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setInput(String(reader.result ?? ''));
+      setError('');
+    };
+    reader.readAsText(file);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      format();
+    }
+  };
+
   return (
     <div>
       <div className="mb-3 flex flex-wrap gap-2">
@@ -68,8 +108,14 @@ export default function JsonFormatter() {
         <button onClick={validate} disabled={!input.trim()} className={btnGhost}>
           校验
         </button>
+        <button onClick={pasteFromClipboard} className={btnGhost}>
+          粘贴
+        </button>
         <button onClick={loadSample} className={btnGhost}>
           示例
+        </button>
+        <button onClick={download} disabled={!output} className={btnGhost}>
+          下载
         </button>
         <button
           onClick={() => {
@@ -84,29 +130,44 @@ export default function JsonFormatter() {
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <div>
-          <label className="mb-1.5 block text-sm font-medium text-gray-600">输入 JSON</label>
+        {/* 输入区：右上角悬浮放大按钮（relative 容器 + absolute 按钮） */}
+        <div className="relative flex flex-col">
+          <label className="mb-1.5 block text-sm font-medium text-gray-600 dark:text-gray-400">
+            输入 JSON
+            <span className="ml-2 font-normal text-gray-400 dark:text-gray-500">
+              （可拖入文件，Ctrl+Enter 快速格式化）
+            </span>
+          </label>
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onDrop={onDrop}
+            onDragOver={(e) => e.preventDefault()}
+            onKeyDown={onKeyDown}
             placeholder='粘贴 JSON，例如：{"hello": "world"}'
             spellCheck={false}
-            className="h-80 w-full resize-y rounded-xl border border-gray-300 bg-gray-50 p-3 font-mono text-sm leading-relaxed outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className={`${expanded ? 'flex-1' : 'h-[32rem]'} w-full resize-y rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-950 p-3 font-mono text-sm leading-relaxed outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100`}
           />
+    
         </div>
-        <div>
+
+        <div className="flex flex-col">
           <div className="mb-1.5 flex items-center justify-between">
-            <label className="text-sm font-medium text-gray-600">结果</label>
+            <label className="text-sm font-medium text-gray-600 dark:text-gray-400">结果</label>
             <button onClick={copy} disabled={!output} className={btnGhost + ' !px-3 !py-1'}>
               {copied ? '✓ 已复制' : '复制'}
             </button>
           </div>
           {error ? (
-            <div className="h-80 overflow-auto rounded-xl border border-red-200 bg-red-50 p-3 font-mono text-sm text-red-600">
+            <div
+              className={`${expanded ? 'flex-1' : 'h-[32rem]'} overflow-auto rounded-xl border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-950/40 p-3 font-mono text-sm text-red-600 dark:text-red-400`}
+            >
               ❌ {error}
             </div>
           ) : (
-            <pre className="h-80 overflow-auto rounded-xl border border-gray-300 bg-gray-900 p-3 font-mono text-sm leading-relaxed text-green-300">
+            <pre
+              className={`${expanded ? 'flex-1' : 'h-[32rem]'} overflow-auto rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-900 p-3 font-mono text-sm leading-relaxed text-green-300`}
+            >
               {output || '结果将显示在这里…'}
             </pre>
           )}

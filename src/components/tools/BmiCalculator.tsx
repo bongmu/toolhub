@@ -12,27 +12,27 @@ function classify(bmi: number): Level {
     return {
       label: '偏瘦',
       color: 'text-sky-700',
-      bg: 'bg-sky-100',
+      bg: 'bg-sky-100 dark:bg-sky-950/50',
       advice: '体重偏低，建议均衡饮食、适当增加优质蛋白和力量训练。',
     };
   if (bmi < 24)
     return {
       label: '正常',
       color: 'text-green-700',
-      bg: 'bg-green-100',
+      bg: 'bg-green-100 dark:bg-green-950/50',
       advice: '体重在健康范围，保持规律运动和均衡饮食即可。',
     };
   if (bmi < 28)
     return {
       label: '超重',
       color: 'text-amber-700',
-      bg: 'bg-amber-100',
+      bg: 'bg-amber-100 dark:bg-amber-950/50',
       advice: '体重略高，建议控制热量摄入并增加有氧运动。',
     };
   return {
     label: '肥胖',
     color: 'text-red-700',
-    bg: 'bg-red-100',
+    bg: 'bg-red-100 dark:bg-red-950/50',
     advice: '体重明显超标，建议制定科学的减重计划，必要时咨询医生或营养师。',
   };
 }
@@ -55,23 +55,23 @@ export default function BmiCalculator() {
     <div className="space-y-6">
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-gray-600">身高（cm）</label>
+          <label className="mb-1.5 block text-sm font-medium text-gray-600 dark:text-gray-400">身高（cm）</label>
           <input
             type="number"
             value={height}
             onChange={(e) => setHeight(e.target.value)}
             placeholder="如 170"
-            className="w-full rounded-xl border border-gray-300 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className="w-full rounded-xl border border-gray-300 dark:border-gray-600 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-gray-600">体重（kg）</label>
+          <label className="mb-1.5 block text-sm font-medium text-gray-600 dark:text-gray-400">体重（kg）</label>
           <input
             type="number"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             placeholder="如 65"
-            className="w-full rounded-xl border border-gray-300 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+            className="w-full rounded-xl border border-gray-300 dark:border-gray-600 px-3 py-2.5 outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
           />
         </div>
       </div>
@@ -82,12 +82,12 @@ export default function BmiCalculator() {
             <span className={`text-4xl font-bold ${result.level.color}`}>
               {result.bmi.toFixed(1)}
             </span>
-            <span className={`rounded-full bg-white px-3 py-1 text-sm font-medium ${result.level.color}`}>
+            <span className={`rounded-full bg-white dark:bg-gray-900 px-3 py-1 text-sm font-medium ${result.level.color}`}>
               {result.level.label}
             </span>
           </div>
-          <p className="mt-3 text-sm leading-relaxed text-gray-700">{result.level.advice}</p>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-3 text-sm leading-relaxed text-gray-700 dark:text-gray-300">{result.level.advice}</p>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
             你的健康体重范围：
             <span className="font-semibold">
               {result.minW.toFixed(1)} ~ {result.maxW.toFixed(1)} kg
@@ -102,7 +102,7 @@ export default function BmiCalculator() {
               <div className="w-[24%] bg-amber-400" />
               <div className="flex-1 bg-red-400" />
             </div>
-            <div className="mt-1 flex justify-between text-xs text-gray-500">
+            <div className="mt-1 flex justify-between text-xs text-gray-500 dark:text-gray-400">
               <span>偏瘦 &lt;18.5</span>
               <span>正常 18.5-23.9</span>
               <span>超重 24-27.9</span>
@@ -111,12 +111,12 @@ export default function BmiCalculator() {
           </div>
         </div>
       ) : (
-        <p className="rounded-xl bg-gray-100 p-4 text-center text-sm text-gray-500">
+        <p className="rounded-xl bg-gray-100 dark:bg-gray-800 p-4 text-center text-sm text-gray-500 dark:text-gray-400">
           请输入合理的身高（50-300 cm）和体重（10-500 kg）
         </p>
       )}
 
-      <p className="text-xs leading-relaxed text-gray-400">
+      <p className="text-xs leading-relaxed text-gray-400 dark:text-gray-500">
         注：BMI 采用中国成人标准，仅适用于 18 岁以上成年人，不适用于孕妇、运动员等特殊人群。
       </p>
     </div>

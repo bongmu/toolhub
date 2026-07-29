@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 const btn =
   'rounded-lg px-4 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40';
 const btnPrimary = `${btn} bg-indigo-600 text-white hover:bg-indigo-700`;
-const btnGhost = `${btn} border border-gray-300 bg-white text-gray-700 hover:bg-gray-50`;
+const btnGhost = `${btn} border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-950`;
 
 const UPPER = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
 const LOWER = 'abcdefghijkmnpqrstuvwxyz';
@@ -39,7 +39,7 @@ function genPassword(length: number, charset: string): string {
 function strengthOf(length: number, charsetSize: number) {
   if (!charsetSize) return { label: '—', color: 'bg-gray-200', width: '0%' };
   const entropy = length * Math.log2(charsetSize);
-  if (entropy < 40) return { label: '弱', color: 'bg-red-500', width: '25%' };
+  if (entropy < 40) return { label: '弱', color: 'bg-red-50 dark:bg-red-950/400', width: '25%' };
   if (entropy < 60) return { label: '中', color: 'bg-amber-500', width: '50%' };
   if (entropy < 80) return { label: '强', color: 'bg-lime-500', width: '75%' };
   return { label: '很强', color: 'bg-green-600', width: '100%' };
@@ -80,7 +80,7 @@ export default function PasswordGenerator() {
     <div className="space-y-5">
       {/* 密码展示 */}
       <div className="flex items-center gap-2">
-        <code className="min-h-[3rem] flex-1 break-all rounded-xl border border-gray-300 bg-gray-900 px-4 py-3 font-mono text-lg text-green-300">
+        <code className="min-h-[3rem] flex-1 break-all rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-900 px-4 py-3 font-mono text-lg text-green-300">
           {password || '点击下方按钮生成密码'}
         </code>
         <button onClick={copy} disabled={!password} className={btnGhost}>
@@ -91,10 +91,10 @@ export default function PasswordGenerator() {
       {/* 强度条 */}
       <div>
         <div className="mb-1 flex justify-between text-sm">
-          <span className="text-gray-500">密码强度</span>
-          <span className="font-medium text-gray-700">{strength.label}</span>
+          <span className="text-gray-500 dark:text-gray-400">密码强度</span>
+          <span className="font-medium text-gray-700 dark:text-gray-300">{strength.label}</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-gray-100">
+        <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
           <div className={`h-full rounded-full transition-all ${strength.color}`} style={{ width: strength.width }} />
         </div>
       </div>
@@ -102,8 +102,8 @@ export default function PasswordGenerator() {
       {/* 长度 */}
       <div>
         <div className="mb-1 flex justify-between text-sm">
-          <span className="text-gray-500">长度</span>
-          <span className="font-mono font-medium text-gray-700">{length}</span>
+          <span className="text-gray-500 dark:text-gray-400">长度</span>
+          <span className="font-mono font-medium text-gray-700 dark:text-gray-300">{length}</span>
         </div>
         <input
           type="range"
@@ -125,7 +125,7 @@ export default function PasswordGenerator() {
             ['symbols', '符号 !@#$'],
           ] as [keyof Options, string][]
         ).map(([key, label]) => (
-          <label key={key} className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-700">
+          <label key={key} className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300">
             <input
               type="checkbox"
               checked={opts[key]}
@@ -135,7 +135,7 @@ export default function PasswordGenerator() {
             {label}
           </label>
         ))}
-        <label className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-700">
+        <label className="flex cursor-pointer items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300">
           <input
             type="checkbox"
             checked={excludeAmbiguous}
@@ -149,7 +149,7 @@ export default function PasswordGenerator() {
       <button onClick={generate} disabled={!charset} className={btnPrimary}>
         🎲 生成密码
       </button>
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-gray-400 dark:text-gray-500">
         密码使用浏览器密码学安全随机数在本地生成，不经过网络传输。
       </p>
     </div>

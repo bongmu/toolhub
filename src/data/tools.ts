@@ -16,6 +16,8 @@ export interface Tool {
   slug: string;
   /** 工具名称（卡片标题、H1） */
   name: string;
+  /** 图标 emoji（卡片、H1、最近使用等处展示） */
+  icon: string;
   /** 一句话描述（卡片副标题、meta description 的基础） */
   description: string;
   /** 分类 id，对应下面 CATEGORIES */
@@ -24,6 +26,8 @@ export interface Tool {
   keywords: string[];
   /** src/components/tools/ 下的组件文件名（不带 .tsx） */
   component: string;
+  /** 需要大输入区的工具（JSON、Markdown 等），页面布局放宽 */
+  bigInput?: boolean;
   /** 页面底部的 SEO 介绍文案（2-3 段，支持多段） */
   seoContent?: string[];
   /** 常见问题（会渲染成 FAQ，并输出结构化数据，利于搜索展现） */
@@ -56,10 +60,12 @@ export const TOOLS: Tool[] = [
   {
     slug: 'json-formatter',
     name: 'JSON 格式化',
+    icon: '🔧',
     description: '在线 JSON 格式化、压缩与校验，支持语法高亮和错误定位',
     category: 'dev',
     keywords: ['json', '格式化', '压缩', '校验', 'beautify', 'validate', 'minify'],
     component: 'JsonFormatter',
+    bigInput: true,
     seoContent: [
       'JSON（JavaScript Object Notation）是目前最流行的数据交换格式，广泛应用于 API 接口、配置文件和数据存储。在开发调试过程中，我们经常遇到被压缩成一行的 JSON 数据，难以阅读；或者手写 JSON 时因为一个多余的逗号导致解析失败。',
       '本工具可以将混乱的 JSON 一键格式化为带缩进、语法高亮的可读形式，也可以反向压缩成单行以节省传输体积。内置实时校验功能，当 JSON 存在语法错误时会给出具体的错误位置和原因，帮助你快速定位问题。所有处理都在你的浏览器本地完成，数据不会上传到任何服务器，可放心处理敏感数据。',
@@ -73,10 +79,12 @@ export const TOOLS: Tool[] = [
   {
     slug: 'base64',
     name: 'Base64 编码解码',
+    icon: '🔣',
     description: '在线 Base64 编码与解码，完美支持中文等 UTF-8 字符',
     category: 'dev',
     keywords: ['base64', '编码', '解码', 'encode', 'decode', '中文'],
     component: 'Base64Tool',
+    bigInput: true,
     seoContent: [
       'Base64 是一种用 64 个可打印字符来表示二进制数据的编码方式，常用于在文本协议中传输图片、文件等二进制内容，也常用于简单的数据混淆。',
       '本工具支持文本的 Base64 编码与解码，并且正确处理 UTF-8 字符集，中文、Emoji 等内容编解码不会出现乱码。所有转换均在浏览器本地完成，无需联网，数据安全有保障。',
@@ -89,6 +97,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'timestamp',
     name: '时间戳转换',
+    icon: '⏱️',
     description: 'Unix 时间戳与日期时间互转，实时显示当前时间戳',
     category: 'dev',
     keywords: ['时间戳', 'timestamp', 'unix', '日期', '转换', 'date'],
@@ -105,6 +114,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'uuid-generator',
     name: 'UUID 生成器',
+    icon: '🆔',
     description: '在线批量生成 UUID v4，支持大写、无横线等多种格式',
     category: 'dev',
     keywords: ['uuid', 'guid', '生成器', 'v4', '唯一标识'],
@@ -121,6 +131,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'password-generator',
     name: '随机密码生成器',
+    icon: '🔑',
     description: '生成高强度随机密码，自定义长度与字符类型，本地生成更安全',
     category: 'dev',
     keywords: ['密码', 'password', '随机', '生成器', '安全', '强度'],
@@ -138,10 +149,12 @@ export const TOOLS: Tool[] = [
   {
     slug: 'word-counter',
     name: '字数统计',
+    icon: '🔢',
     description: '在线统计字数、字符数、段落数、句子数和预计阅读时长',
     category: 'text',
     keywords: ['字数', '统计', '字符', 'word', 'count', '阅读时长', '作文'],
     component: 'WordCounter',
+    bigInput: true,
     seoContent: [
       '无论是写作文、写论文、运营公众号还是准备演讲稿，准确掌握文本的字数都是刚需。不同场景对"字数"的定义也不同：有的按字符数算，有的按词数算。',
       '本工具在你输入的同时实时统计：总字符数（含/不含空格）、中文汉字数、英文单词数、数字、标点、段落数、句子数，并估算中文和英文的阅读时长。所有统计均在浏览器本地实时完成，长文本也不会卡顿。',
@@ -154,10 +167,12 @@ export const TOOLS: Tool[] = [
   {
     slug: 'markdown-editor',
     name: 'Markdown 编辑器',
+    icon: '✍️',
     description: '在线 Markdown 编辑与实时预览，支持导出 HTML',
     category: 'text',
     keywords: ['markdown', '编辑器', '预览', 'md', 'html', '写作'],
     component: 'MarkdownEditor',
+    bigInput: true,
     seoContent: [
       'Markdown 是一种轻量级标记语言，用简单的符号（如 # 表示标题、** 表示加粗）就能排出整洁的格式，是程序员写文档、博主写文章的首选格式。',
       '本工具提供左右分栏的编辑与实时预览：左边输入 Markdown 源码，右边即时显示渲染效果。支持标题、列表、表格、代码块、任务列表等常用语法，写完后可一键复制 HTML 代码或纯文本。所有内容保存在你的浏览器本地，刷新页面也不会丢失。',
@@ -171,6 +186,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'qrcode-generator',
     name: '二维码生成器',
+    icon: '📱',
     description: '输入文字或网址，立即生成高清二维码，支持自定义尺寸和下载',
     category: 'image',
     keywords: ['二维码', 'qrcode', '生成', '扫码', '网址', '下载'],
@@ -188,6 +204,7 @@ export const TOOLS: Tool[] = [
   {
     slug: 'bmi-calculator',
     name: 'BMI 计算器',
+    icon: '⚖️',
     description: '输入身高体重，快速计算 BMI 指数及健康体重范围',
     category: 'life',
     keywords: ['bmi', '计算器', '体重', '身高', '健康', '减肥', '指数'],
@@ -224,4 +241,25 @@ export function searchTools(query: string): Tool[] {
     const haystack = [t.name, t.description, t.slug, ...t.keywords].join(' ').toLowerCase();
     return q.split(/\s+/).every((word) => haystack.includes(word));
   });
+}
+
+
+// ---------- 收藏（localStorage） ----------
+
+const FAV_KEY = 'toolhub-favorites';
+
+export function getFavorites(): string[] {
+  if (typeof localStorage === 'undefined') return [];
+  try {
+    return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+  } catch {
+    return [];
+  }
+}
+
+export function toggleFavorite(slug: string): string[] {
+  const favs = getFavorites();
+  const next = favs.includes(slug) ? favs.filter((s) => s !== slug) : [slug, ...favs];
+  localStorage.setItem(FAV_KEY, JSON.stringify(next));
+  return next;
 }
