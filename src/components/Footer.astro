@@ -1,0 +1,39 @@
+---
+import { CATEGORIES, SITE, TOOLS } from '../data/tools';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t border-gray-200 bg-white">
+  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
+    <div>
+      <div class="mb-3 flex items-center gap-2 font-bold text-gray-900">
+        <span class="text-xl">🧰</span> {SITE.name}
+      </div>
+      <p class="text-sm leading-relaxed text-gray-500">
+        {SITE.tagline}，无需注册，打开即用。所有工具均在浏览器本地运行，保护你的数据隐私。
+      </p>
+    </div>
+    {
+      CATEGORIES.map((c) => (
+        <div>
+          <div class="mb-3 text-sm font-semibold text-gray-900">
+            {c.icon} {c.name}
+          </div>
+          <ul class="space-y-2">
+            {TOOLS.filter((t) => t.category === c.id).map((t) => (
+              <li>
+                <a href={`/tools/${t.slug}/`} class="text-sm text-gray-500 transition hover:text-indigo-600">
+                  {t.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+  <div class="border-t border-gray-100 py-4 text-center text-xs text-gray-400">
+    © {year} {SITE.name} · 让每一分钟更有效率
+  </div>
+</footer>

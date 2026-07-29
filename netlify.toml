@@ -1,0 +1,9 @@
+# Netlify 部署配置（如果用 Vercel 可忽略此文件，Vercel 会自动识别 Astro）
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

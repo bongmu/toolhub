@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SearchBox from '../components/SearchBox';
+import { CATEGORIES, TOOLS, SITE } from '../data/tools';
+
+// 传给前端搜索用的精简数据
+const searchData = TOOLS.map((t) => ({
+  slug: t.slug,
+  name: t.name,
+  description: t.description,
+  category: t.category,
+  keywords: t.keywords,
+}));
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.name,
+    url: Astro.site?.href,
+    description: SITE.description,
+    inLanguage: 'zh-CN',
+  },
+];
+---
+
+<BaseLayout jsonLd={jsonLd}>
+  <!-- Hero 区 -->
+  <section class="border-b border-gray-200 bg-gradient-to-b from-indigo-50 to-gray-50">
+    <div class="mx-auto max-w-6xl px-4 py-14 text-center">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        {SITE.tagline}
+      </h1>
+      <p class="mx-auto mt-4 max-w-2xl text-gray-500">
+        无需注册、打开即用。所有工具均在你的浏览器本地运行，数据不上传服务器，安全又快速。
+      </p>
+      <div class="mx-auto mt-8 max-w-xl">
+        <SearchBox client:load tools={searchData} />
+      </div>
+    </div>
+  </section>
+
+  <!-- 分类 + 工具卡片 -->
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    {
+      CATEGORIES.map((cat) => {
+        const tools = TOOLS.filter((t) => t.category === cat.id);
+        if (!tools.length) return null;
+        return (
+          <section id={`cat-${cat.id}`} class="mb-12 scroll-mt-20">
+            <div class="mb-5 flex items-baseline gap-3">
+              <h2 class="text-xl font-bold text-gray-900">
+                {cat.icon} {cat.name}
+              </h2>
+              <p class="hidden text-sm text-gray-400 sm:block">{cat.description}</p>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {tools.map((tool) => (
+                <a
+                  href={`/tools/${tool.slug}/`}
+                  class="group rounded-2xl border border-gray-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-md"
+                >
+                  <h3 class="font-semibold text-gray-900 group-hover:text-indigo-600">
+                    {tool.name}
+                  </h3>
+                  <p class="mt-1.5 line-clamp-2 text-sm leading-relaxed text-gray-500">
+                    {tool.description}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </section>
+        );
+      })
+    }
+  </div>
+</BaseLayout>

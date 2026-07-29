@@ -1,0 +1,134 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { getCategory, SITE, type Tool } from '../data/tools';
+
+interface Props {
+  tool: Tool;
+}
+
+const { tool } = Astro.props;
+const category = getCategory(tool.category);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const title = `${tool.name} - 在线免费工具 | ${SITE.name}`;
+const description = `${tool.description}。免费在线使用，无需注册下载，数据本地处理不上传服务器。`;
+
+// 结构化数据：WebApplication + 面包屑 + FAQ，帮助搜索引擎理解页面
+const jsonLd: object[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: tool.name,
+    url: canonicalURL.href,
+    description: tool.description,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'CNY' },
+    inLanguage: 'zh-CN',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: new URL('/', Astro.site).href },
+      ...(category
+        ? [
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: category.name,
+              item: new URL(`/#cat-${category.id}`, Astro.site).href,
+            },
+          ]
+        : []),
+      {
+        '@type': 'ListItem',
+        position: category ? 3 : 2,
+        name: tool.name,
+        item: canonicalURL.href,
+      },
+    ],
+  },
+];
+
+if (tool.faqs?.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: tool.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
+---
+
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
+  <div class="mx-auto max-w-4xl px-4 py-8">
+    <!-- 面包屑 -->
+    <nav class="mb-4 text-sm text-gray-400">
+      <a href="/" class="transition hover:text-indigo-600">首页</a>
+      {
+        category && (
+          <>
+            <span class="mx-1.5">/</span>
+            <a href={`/#cat-${category.id}`} class="transition hover:text-indigo-600">
+              {category.icon} {category.name}
+            </a>
+          </>
+        )
+      }
+      <span class="mx-1.5">/</span>
+      <span class="text-gray-600">{tool.name}</span>
+    </nav>
+
+    <!-- 标题区 -->
+    <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">{tool.name}</h1>
+    <p class="mt-2 text-gray-500">{tool.description}</p>
+
+    <!-- 广告位：标题下方（接入 AdSense 后显示） -->
+    <AdSlot />
+
+    <!-- 工具本体 -->
+    <div class="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+      <slot />
+    </div>
+
+    <!-- SEO 介绍文案 -->
+    {
+      tool.seoContent?.length ? (
+        <section class="prose prose-gray mt-10 max-w-none">
+          <h2 class="text-xl font-bold text-gray-900">关于{tool.name}</h2>
+          {tool.seoContent.map((p) => (
+            <p class="mt-3 leading-relaxed text-gray-600">{p}</p>
+          ))}
+        </section>
+      ) : null
+    }
+
+    <!-- 常见问题 -->
+    {
+      tool.faqs?.length ? (
+        <section class="mt-10">
+          <h2 class="text-xl font-bold text-gray-900">常见问题</h2>
+          <div class="mt-4 space-y-3">
+            {tool.faqs.map((f) => (
+              <details class="group rounded-xl border border-gray-200 bg-white px-5 py-4">
+                <summary class="flex cursor-pointer list-none items-center justify-between font-medium text-gray-800">
+                  {f.q}
+                  <span class="ml-2 text-gray-400 transition group-open:rotate-180">▾</span>
+                </summary>
+                <p class="mt-3 leading-relaxed text-gray-600">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      ) : null
+    }
+
+    <!-- 广告位：页面底部 -->
+    <AdSlot />
+  </div>
+</BaseLayout>

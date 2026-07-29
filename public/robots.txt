@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Astro 构建时自动生成 sitemap.xml
+Sitemap: https://toolhub.example.com/sitemap-index.xml

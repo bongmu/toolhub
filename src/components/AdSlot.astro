@@ -1,0 +1,37 @@
+---
+// ============================================================
+// 广告位组件：接入 AdSense 前的占位 + 接入后的自动展示
+// ------------------------------------------------------------
+// 接入方法（全程不用改代码）：
+//   1. 在 .env 或部署平台环境变量中设置 PUBLIC_ADSENSE_ID=pub-xxxx
+//   2. 在 AdSense 后台创建"展示广告"单元，拿到 data-ad-slot
+//   3. 把下面的 data-ad-slot="你的广告位ID" 替换为真实 ID 即可
+// ============================================================
+
+interface Props {
+  /** AdSense 广告位 ID（data-ad-slot） */
+  slot?: string;
+  class?: string;
+}
+
+const { slot = '', class: className = '' } = Astro.props;
+const adsenseId = import.meta.env.PUBLIC_ADSENSE_ID;
+---
+
+{
+  adsenseId && slot ? (
+    <div class={`my-6 ${className}`}>
+      <ins
+        class="adsbygoogle"
+        style="display:block"
+        data-ad-client={adsenseId}
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      <script is:inline>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  ) : null
+}

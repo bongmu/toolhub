@@ -1,0 +1,39 @@
+---
+// ============================================================
+// 动态路由：根据 src/data/tools.ts 自动生成所有工具页面
+// 新增工具时：在下方 COMPONENTS 加一行映射即可
+// ============================================================
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import { TOOLS } from '../../data/tools';
+
+import JsonFormatter from '../../components/tools/JsonFormatter';
+import Base64Tool from '../../components/tools/Base64Tool';
+import TimestampConverter from '../../components/tools/TimestampConverter';
+import UuidGenerator from '../../components/tools/UuidGenerator';
+import PasswordGenerator from '../../components/tools/PasswordGenerator';
+import WordCounter from '../../components/tools/WordCounter';
+import MarkdownEditor from '../../components/tools/MarkdownEditor';
+import QrCodeGenerator from '../../components/tools/QrCodeGenerator';
+import BmiCalculator from '../../components/tools/BmiCalculator';
+
+export function getStaticPaths() {
+  return TOOLS.map((tool) => ({
+    params: { slug: tool.slug },
+    props: { tool },
+  }));
+}
+
+const { tool } = Astro.props;
+---
+
+<ToolLayout tool={tool}>
+  {tool.component === 'JsonFormatter' && <JsonFormatter client:load />}
+  {tool.component === 'Base64Tool' && <Base64Tool client:load />}
+  {tool.component === 'TimestampConverter' && <TimestampConverter client:load />}
+  {tool.component === 'UuidGenerator' && <UuidGenerator client:load />}
+  {tool.component === 'PasswordGenerator' && <PasswordGenerator client:load />}
+  {tool.component === 'WordCounter' && <WordCounter client:load />}
+  {tool.component === 'MarkdownEditor' && <MarkdownEditor client:load />}
+  {tool.component === 'QrCodeGenerator' && <QrCodeGenerator client:load />}
+  {tool.component === 'BmiCalculator' && <BmiCalculator client:load />}
+</ToolLayout>
